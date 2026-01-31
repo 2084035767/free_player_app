@@ -4,6 +4,6 @@ A new Flutter project.
 
 
 
-git remote add origin https://github.com/2084035767/free_player_app.git
-git branch -M master
-git push -u origin master
+git tag -a v1.0.0-beta.1 -m "基本功能完成"
+
+git push origin v1.0.0-beta.1
