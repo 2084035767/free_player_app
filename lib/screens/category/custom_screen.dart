@@ -6,49 +6,45 @@ import 'package:free_play_app/services/video_service.dart';
 import 'package:free_play_app/widget/media_page.dart';
 import 'package:signals_hooks/signals_hooks.dart';
 
-class CategoryScreen extends HookWidget {
-  const CategoryScreen({super.key});
-  static const _tabItems = [
-    Tab(text: '推荐'),
-    Tab(text: '电影'),
-    Tab(text: '剧集'),
-    Tab(text: '综艺'),
-    Tab(text: '动漫'),
-  ];
+enum Types {
+  media('电影'),
+  tv('剧集'),
+  variety('综艺'),
+  anime('动漫'),
+  documentary('纪录片'),
+  shortplay('短片'),
+  sport('运动'),
+  more('更多');
+
+  final String title;
+  const Types(this.title);
+}
+
+class CustomScreen extends HookWidget {
+  final int categoryId;
+  const CustomScreen({super.key, required this.categoryId});
+
   @override
   Widget build(BuildContext context) {
-    final tabIndex = useSignal<int>(0);
     final vs = useMemoized(() => getIt<VideoService>());
+    final categoryIndex = useSignal<int>(categoryId);
 
-    final tabController = useTabController(initialLength: 1);
     final category = useFutureSignal(
-      () => vs.fetchCategory(tabIndex.value),
-      dependencies: [tabIndex],
+      () => vs.fetchCategory(categoryIndex.value),
+      dependencies: [categoryIndex],
     );
-    tabController.addListener(() {
-      if (tabController.indexIsChanging) {
-        tabIndex.value = tabController.index;
-      }
-    });
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('分类'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.tune),
-            onPressed: () {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(const SnackBar(content: Text('功能待开发')));
-            },
+
+    return Watch.builder(
+      builder: (context) {
+        return Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () => RouterManager.pop(context),
+            ),
+            title: Text(Types.values[categoryIndex.value].title),
           ),
-        ],
-        bottom: TabBar(controller: tabController, tabs: _tabItems),
-      ),
-      body: TabBarView(
-        controller: tabController,
-        children: [
-          Watch.builder(
+          body: Watch.builder(
             builder: (context) {
               return SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(
@@ -59,7 +55,6 @@ class CategoryScreen extends HookWidget {
                   AsyncData(value: final videos) => Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // 电影榜单
                       MediaPage(
                         mediaItems: videos.map((video) {
                           return MediaPageItem(
@@ -68,7 +63,7 @@ class CategoryScreen extends HookWidget {
                             posterUrl: video.vodPic,
                             year: video.vodYear,
                             type: video.typeName,
-                            rating: video.vodDoubanScore, // 使用实际的海报URL
+                            rating: video.vodDoubanScore,
                           );
                         }).toList(),
                         onTap: (video) {
@@ -92,8 +87,8 @@ class CategoryScreen extends HookWidget {
               );
             },
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

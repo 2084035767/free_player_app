@@ -4,6 +4,6 @@ import 'app.dart';
 import 'di/service_locator.dart';
 
 void main() async {
-  setupLocator();
+  configureDependencies();
   runApp(const MyApp());
 }

@@ -1,9 +1,10 @@
-
 import 'package:free_play_app/core/utils/logger.dart';
 import 'package:free_play_app/models/user.dart';
 import 'package:free_play_app/services/mine_service.dart';
+import 'package:injectable/injectable.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 
+@injectable
 class MineViewModel {
   final MineService _api;
 
@@ -18,7 +19,7 @@ class MineViewModel {
       profile.value = AsyncState.data(data);
     } catch (e) {
       profile.value = AsyncState.error(e);
-      Logger.error('Error loading profile: $e');
+      Logging.error('Error loading profile: $e');
     }
   }
 

@@ -117,92 +117,77 @@ class _MediaGridItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final cardRadius = BorderRadius.circular(12);
+    final cardRadius = BorderRadius.circular(8);
     return GestureDetector(
       onTap: () => onTap?.call(media),
-      child: Card(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 5,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  left: 1,
-                  right: 1,
-                  top: 8,
-                  bottom: 2,
-                ),
-                child: Center(
-                  child: Stack(
-                    children: [
-                      ClipRRect(
-                        borderRadius: cardRadius,
-                        child: Image.network(media.posterUrl),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 5,
+            child: Center(
+              child: Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: cardRadius,
+                    child: Image.network(media.posterUrl),
+                  ),
+                  // 评分标签
+                  Positioned(
+                    top: 0,
+                    right: 4,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 4,
+                        vertical: 2,
                       ),
-                      // 评分标签
-                      Positioned(
-                        top: 0,
-                        right: 4,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 4,
-                            vertical: 2,
-                          ),
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(128, 175, 226, 248),
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Text(
-                            media.rating,
-                            style: theme.textTheme.labelLarge?.copyWith(
-                              color: Colors.white,
-                            ),
-                          ),
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(128, 175, 226, 248),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Text(
+                        media.rating,
+                        style: theme.textTheme.labelLarge?.copyWith(
+                          color: Colors.white,
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  left: 8,
-                  right: 8,
-                  top: 2,
-                  bottom: 4,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      media.title,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.left,
+          ),
+          Expanded(
+            flex: 2,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    media.title,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
                     ),
-                    const SizedBox(height: 2),
-                    Text(
-                      media.remark,
-                      style: const TextStyle(fontSize: 10, color: Colors.grey),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.left,
-                    ),
-                  ],
-                ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.left,
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    media.remark,
+                    style: const TextStyle(fontSize: 10, color: Colors.grey),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.left,
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

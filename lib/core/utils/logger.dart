@@ -1,58 +1,41 @@
-import 'dart:developer' as developer;
+// lib/core/logger.dart
+import 'package:logger/logger.dart';
 
-import 'package:free_play_app/core/constants.dart';
+class Logging {
+  static final _logger = Logger(
+    printer: PrettyPrinter(
+      methodCount: 0, // number of method calls to be displayed
+      errorMethodCount: 8, // number of method calls if stacktrace is provided
+      lineLength: 120, // width of the output
+      colors: true, // Colorful log messages
+      printEmojis: true, // Print an emoji for each log message
+      dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
+    ),
+  );
 
-class Logger {
-  static void info(String message, {String? tag, DateTime? time}) {
-    final actualTag = tag ?? appName;
-    final timestamp = time ?? DateTime.now();
-    developer.log(
-      message,
-      name: actualTag,
-      level: 500, // INFO level
-      time: timestamp,
-    );
+  static void info(String message) {
+    _logger.i(message);
   }
 
   static void error(
     String message, {
-    String? tag,
-    DateTime? time,
     Object? exception,
     StackTrace? stackTrace,
   }) {
-    final actualTag = tag ?? appName;
-    final timestamp = time ?? DateTime.now();
-    developer.log(
-      message,
-      name: actualTag,
-      level: 1000, // ERROR level
-      time: timestamp,
-      error: exception,
-      stackTrace: stackTrace,
-    );
+    if (exception != null && stackTrace != null) {
+      _logger.e(message, error: exception, stackTrace: stackTrace);
+    } else if (exception != null) {
+      _logger.e(message, error: exception);
+    } else {
+      _logger.e(message);
+    }
   }
 
-  static void debug(String message, {String? tag, DateTime? time}) {
-    final actualTag = tag ?? appName;
-    final timestamp = time ?? DateTime.now();
-    developer.log(
-      message,
-      name: actualTag,
-      level: 300, // DEBUG level
-      time: timestamp,
-    );
-
+  static void debug(String message) {
+    _logger.d(message);
   }
 
-  static void warning(String message, {String? tag, DateTime? time}) {
-    final actualTag = tag ?? appName;
-    final timestamp = time ?? DateTime.now();
-    developer.log(
-      message,
-      name: actualTag,
-      level: 700, // WARNING level
-      time: timestamp,
-    );
+  static void warning(String message) {
+    _logger.w(message);
   }
 }

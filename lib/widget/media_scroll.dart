@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:free_play_app/core/router/router_manager.dart';
 
 /// 影视内容列表组件（横行）
 class MediaScroll extends StatelessWidget {
@@ -38,28 +37,9 @@ class MediaScroll extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: .spaceBetween,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              TextButton(
-                onPressed: () => RouterManager.goNamed(context, page),
-                child: const Text(
-                  "更多",
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.normal,
-                    color: Colors.lightBlue,
-                  ),
-                ),
-              ),
-            ],
+          Text(
+            title,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 12),
           SizedBox(
@@ -123,79 +103,63 @@ class _MediaScrollItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cardRadius = BorderRadius.circular(8);
     return GestureDetector(
       onTap: () => onTap?.call(media),
-      child: Card(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 5,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  left: 1,
-                  right: 1,
-                  top: 8,
-                  bottom: 0,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 5,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
+              child: ClipRRect(
+                borderRadius: cardRadius,
+                child: Image.network(
+                  media.posterUrl,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      color: Colors.grey[300],
+                      child: const Icon(Icons.movie, color: Colors.grey),
+                    );
+                  },
                 ),
-
-                child: Center(
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(8),
+              ),
+            ),
+          ),
+          // 影视信息 - 这里只包含文本内容
+          Expanded(
+            flex: 2,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                // mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    media.title,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
                     ),
-                    child: Image.network(
-                      media.posterUrl,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          color: Colors.grey[300],
-                          child: const Icon(Icons.movie, color: Colors.grey),
-                        );
-                      },
-                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.left, // 确保文本内容左对齐
                   ),
-                ),
+                  const SizedBox(height: 2),
+                  Text(
+                    '${media.year} · ${media.type} · ${media.rating}',
+                    style: const TextStyle(fontSize: 10, color: Colors.grey),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.left, // 确保文本内容左对齐
+                  ),
+                ],
               ),
             ),
-            // 影视信息 - 这里只包含文本内容
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  left: 8,
-                  right: 8,
-                  top: 2,
-                  bottom: 4,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  // mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      media.title,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.left, // 确保文本内容左对齐
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      '${media.year} · ${media.type} · ${media.rating}',
-                      style: const TextStyle(fontSize: 10, color: Colors.grey),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.left, // 确保文本内容左对齐
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

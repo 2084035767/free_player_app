@@ -1,29 +1,28 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:free_play_app/core/app_config.dart';
+import 'package:free_play_app/core/router/router_manager.dart';
+import 'package:free_play_app/di/service_locator.dart';
+import 'package:signals_hooks/signals_hooks.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends HookWidget {
   const ProfileScreen({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfilePageState();
-}
-
-class _ProfilePageState extends State<ProfileScreen> {
-  @override
   Widget build(BuildContext context) {
-    final mode = appConfig.themeMode;
+    final appConfig = useMemoized(() => getIt<AppConfig>());
+    final mode = useExistingSignal(appConfig.themeMode);
     return Scaffold(
       appBar: AppBar(
         title: const Text('我的'),
         actions: [
           IconButton(
-            icon: mode.value == AppThemeMode.dark
-                ? const Icon(Icons.sunny)
-                : const Icon(Icons.nights_stay),
+            icon: Icon(mode.value.iconData),
             onPressed: () {
-              mode.value == AppThemeMode.dark
-                  ? AppThemeMode.light
-                  : AppThemeMode.dark;
+              final newMode = mode.value.toggled;
+              mode.value = newMode;
+              appConfig.setThemeMode(mode.value);
             },
           ),
         ],
@@ -40,7 +39,7 @@ class _ProfilePageState extends State<ProfileScreen> {
                   // 用户头像
                   const CircleAvatar(
                     radius: 40,
-                    backgroundImage: NetworkImage(
+                    backgroundImage: CachedNetworkImageProvider(
                       'https://img.cdn1.vip/i/6975dea5ddb59_1769332389.webp',
                     ),
                   ),
@@ -186,10 +185,7 @@ class _ProfilePageState extends State<ProfileScreen> {
               title: const Text('帮助与反馈'),
               trailing: const Icon(Icons.arrow_forward_ios, size: 16),
               onTap: () {
-                // TODO: 跳转到帮助与反馈页面
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(const SnackBar(content: Text('帮助与反馈功能待开发')));
+                RouterManager.pushNamed(context, RouteNames.help);
               },
             ),
             ListTile(
@@ -197,10 +193,7 @@ class _ProfilePageState extends State<ProfileScreen> {
               title: const Text('隐私政策'),
               trailing: const Icon(Icons.arrow_forward_ios, size: 16),
               onTap: () {
-                // TODO: 跳转到隐私政策页面
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(const SnackBar(content: Text('隐私政策功能待开发')));
+                RouterManager.pushNamed(context, RouteNames.privacy);
               },
             ),
             ListTile(
@@ -208,10 +201,7 @@ class _ProfilePageState extends State<ProfileScreen> {
               title: const Text('关于我'),
               trailing: const Icon(Icons.arrow_forward_ios, size: 16),
               onTap: () {
-                // TODO: 跳转到关于我页面
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(const SnackBar(content: Text('关于我功能待开发')));
+                RouterManager.pushNamed(context, RouteNames.about);
               },
             ),
             const SizedBox(height: 20),

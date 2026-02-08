@@ -12,18 +12,40 @@ class ExploreScreen extends HookWidget {
 
   // 创建示例分类数据
   static final List<CategoryItem> _categories = [
-    CategoryItem(title: '电影', icon: Icons.movie, color: Colors.red),
-    CategoryItem(title: '电视剧', icon: Icons.tv, color: Colors.blue),
-    CategoryItem(title: '综艺', icon: Icons.music_note, color: Colors.green),
-    CategoryItem(title: '动漫', icon: Icons.auto_awesome, color: Colors.orange),
-    CategoryItem(title: '纪录片', icon: Icons.video_library, color: Colors.purple),
-    CategoryItem(title: '短剧', icon: Icons.play_arrow, color: Colors.indigo),
+    CategoryItem(id: 0, title: '电影', icon: Icons.movie, color: Colors.red),
+    CategoryItem(id: 1, title: '剧集', icon: Icons.tv, color: Colors.blue),
     CategoryItem(
+      id: 2,
+      title: '综艺',
+      icon: Icons.music_note,
+      color: Colors.green,
+    ),
+    CategoryItem(
+      id: 3,
+      title: '动漫',
+      icon: Icons.auto_awesome,
+      color: Colors.orange,
+    ),
+    CategoryItem(
+      id: 4,
+      title: '纪录片',
+      icon: Icons.video_library,
+      color: Colors.purple,
+    ),
+    CategoryItem(
+      id: 5,
+      title: '短剧',
+      icon: Icons.play_arrow,
+      color: Colors.indigo,
+    ),
+    CategoryItem(
+      id: 6,
       title: '体育',
       icon: Icons.sports,
       color: const Color.fromARGB(255, 181, 63, 171),
     ),
     CategoryItem(
+      id: 7,
       title: '更多',
       icon: Icons.more_horiz,
       color: const Color.fromARGB(255, 147, 76, 234),
@@ -41,9 +63,7 @@ class ExploreScreen extends HookWidget {
           IconButton(
             icon: const Icon(Icons.search),
             onPressed: () {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(const SnackBar(content: Text('功能待开发')));
+              RouterManager.pushNamed(context, RouteNames.search);
             },
           ),
         ],
@@ -61,9 +81,10 @@ class ExploreScreen extends HookWidget {
                     title: '探索分类',
                     categories: _categories,
                     onTap: (category) {
-                      // TODO: 处理分类点击事件
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('点击了分类: ${category.title}')),
+                      RouterManager.pushNamed(
+                        context,
+                        RouteNames.custom,
+                        pathParameters: {'id': category.id.toString()},
                       );
                     },
                   ),
@@ -99,7 +120,7 @@ class ExploreScreen extends HookWidget {
                         rating: video.vodDoubanScore,
                       );
                     }).toList(),
-                    title: '电影',
+                    title: '剧集',
                     page: 'page',
                     onTap: (video) {
                       RouterManager.pushNamed(
@@ -120,7 +141,7 @@ class ExploreScreen extends HookWidget {
                         rating: video.vodDoubanScore,
                       );
                     }).toList(),
-                    title: '电影',
+                    title: '综艺',
                     page: 'page',
                     onTap: (video) {
                       RouterManager.pushNamed(

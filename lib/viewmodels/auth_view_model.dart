@@ -1,7 +1,9 @@
 import 'package:free_play_app/models/user.dart';
 import 'package:free_play_app/services/auth_service.dart';
+import 'package:injectable/injectable.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 
+@injectable
 class AuthViewModel {
   final AuthService _api;
 

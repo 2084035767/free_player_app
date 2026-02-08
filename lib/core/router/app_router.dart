@@ -36,7 +36,6 @@ class RouteConfig {
   }
 }
 
-/// 路由参数传递助手
 class RouteParams {
   static String getParam(GoRouterState state, String key) {
     return state.pathParameters[key] ?? '';

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
-/// 标准加载指示器组件
 class LoadingIndicator extends StatelessWidget {
-  const LoadingIndicator({super.key, this.size = 24.0});
+  const LoadingIndicator({super.key, this.size = 24.0, this.color});
 
-  /// 指示器大小
   final double size;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class LoadingIndicator extends StatelessWidget {
       child: SizedBox(
         width: size,
         height: size,
-        child: const CircularProgressIndicator(),
+        child: Center(child: Lottie.asset('assets/lottie-cta.json')),
       ),
     );
   }

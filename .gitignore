@@ -36,7 +36,7 @@ migrate_working_dir/
 /coverage/
 QWEN.md
 signals.md
-a.json
+assets/json/a.json
 
 # Symbolication related
 app.*.symbols

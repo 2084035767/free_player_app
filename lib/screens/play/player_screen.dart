@@ -26,7 +26,25 @@ class PlayerPage extends HookWidget {
           aspectRatio: 16 / 9,
           fit: BoxFit.contain,
           autoPlay: true,
-          autoDispose: true, // 自动释放资源
+          translations: [
+            BetterPlayerTranslations(
+              languageCode: 'zh',
+              generalDefaultError: '无法播放视频',
+              generalNone: '无',
+              generalDefault: '默认',
+              generalRetry: '重试', // 修正：繁体"重試" → 简体"重试"
+              playlistLoadingNextVideo: '正在加载下一个视频',
+              controlsLive: '直播',
+              controlsNextVideoIn: '下一个视频',
+              overflowMenuPlaybackSpeed: '播放速度',
+              overflowMenuSubtitles: '字幕',
+              overflowMenuQuality: '画质', // 修正："质量" → 视频领域更常用"画质"
+              overflowMenuAudioTracks: '音轨', // 修正：繁体"音訊" → 简体"音轨"（更符合播放器术语）
+              qualityAuto: '自动', // 严重修正："汽車"（汽车）→ "自动"
+            ),
+          ],
+          autoDispose: true,
+          // placeholder: NetworkImage(currentPlayUrl.value),
         ),
       ),
     );
@@ -61,7 +79,6 @@ class PlayerPage extends HookWidget {
       final dataSource = BetterPlayerDataSource(
         BetterPlayerDataSourceType.network,
         currentPlayUrl.value,
-        liveStream: false,
       );
       controller.setupDataSource(dataSource);
     });
@@ -132,11 +149,11 @@ class PlayerPage extends HookWidget {
                         const SizedBox(height: 8),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          spacing: 8,
+                          spacing: 12,
                           children: [
                             Expanded(
                               child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () => controller.play(),
                                 child: const Text('播放'),
                               ),
                             ),
@@ -179,18 +196,21 @@ class PlayerPage extends HookWidget {
                         GridView.builder(
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 6,
-                                mainAxisSpacing: 6,
-                                crossAxisSpacing: 6,
+                                crossAxisCount: 5,
+                                mainAxisSpacing: 0,
+                                crossAxisSpacing: 12,
                               ),
                           itemCount: count.value,
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, index) => ElevatedButton(
-                            onPressed: () {
-                              currentIndex.value = index;
-                            },
-                            child: Text('${index + 1}'),
+                          itemBuilder: (context, index) => Padding(
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                currentIndex.value = index;
+                              },
+                              child: Center(child: Text('${index + 1}')),
+                            ),
                           ),
                         ),
                       ],

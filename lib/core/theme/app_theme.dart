@@ -121,6 +121,19 @@ class AppThemes {
         ),
         // 亚克力模糊效果需要在具体使用时通过BackdropFilter实现
       ),
+      tabBarTheme: TabBarThemeData(
+        dividerHeight: 0,
+        indicator: UnderlineTabIndicator(
+          borderSide: BorderSide(
+            color: mediumGray,
+            width: 2.0, // 线条高度
+          ),
+          insets: EdgeInsets.only(bottom: 2),
+        ),
+        labelColor: primaryGray,
+        unselectedLabelColor: Colors.grey,
+        indicatorSize: TabBarIndicatorSize.label,
+      ),
       cardTheme: CardThemeData(
         color: cardColor,
         elevation: 0.5, // 减少阴影
@@ -185,7 +198,7 @@ class AppThemes {
 
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: coolGray400,
+          backgroundColor: primaryGray,
           foregroundColor: Colors.white,
           elevation: 0.5, // 减少阴影
           padding: const EdgeInsets.symmetric(
@@ -204,7 +217,10 @@ class AppThemes {
           TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
         ),
       ),
-
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: backgroundColor.withValues(alpha: .8),
+        selectedItemColor: primaryGray,
+      ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: coolGray50,
@@ -276,6 +292,23 @@ class AppThemes {
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
       ),
+      tabBarTheme: TabBarThemeData(
+        dividerHeight: 0,
+        indicator: UnderlineTabIndicator(
+          borderSide: BorderSide(
+            color: mediumGray,
+            width: 2.0, // 线条高度
+          ),
+          insets: EdgeInsets.only(bottom: 2),
+        ),
+        labelColor: primaryGray,
+        unselectedLabelColor: Colors.grey,
+        indicatorSize: TabBarIndicatorSize.label,
+      ),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: darkBackgroundColor.withValues(alpha: .8),
+        selectedItemColor: primaryGray,
+      ),
       cardTheme: CardThemeData(
         color: darkCardColor,
         elevation: 0.5,
@@ -323,8 +356,8 @@ class AppThemes {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: coolGray600,
-          foregroundColor: Colors.white,
+          backgroundColor: darkAccentBlue,
+          foregroundColor: Colors.black,
           elevation: 0.5,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           shape: RoundedRectangleBorder(

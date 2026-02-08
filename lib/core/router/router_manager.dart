@@ -2,17 +2,24 @@
 import 'package:flutter/material.dart';
 import 'package:free_play_app/screens/auth/login_screen.dart';
 import 'package:free_play_app/screens/category/category_screen.dart';
+import 'package:free_play_app/screens/category/custom_screen.dart';
 import 'package:free_play_app/screens/explore/explore_screen.dart';
 import 'package:free_play_app/screens/home/home_screen.dart';
 import 'package:free_play_app/screens/home/search_screen.dart';
+import 'package:free_play_app/screens/mine/about_page.dart';
+import 'package:free_play_app/screens/mine/help_feedback_page.dart';
+import 'package:free_play_app/screens/mine/privacy_policy_page.dart';
 import 'package:free_play_app/screens/mine/profile_screen.dart';
 import 'package:free_play_app/screens/play/player_screen.dart';
 import 'package:free_play_app/viewmodels/auth_view_model.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:injectable/injectable.dart';
+import 'package:lottie/lottie.dart';
 
 import 'app_router.dart';
 
+//  todo 精简路由
 /// 路由路径常量
 class RoutePaths {
   static const String splash = '/';
@@ -20,34 +27,50 @@ class RoutePaths {
   static const String home = '/home';
   static const String search = '/search';
   static const String profile = '/profile';
+  static const String about = '/about';
   static const String settings = '/settings';
   static const String player = '/player/:id';
   static const String explore = '/explore';
+  static const String privacy = '/privacy';
   static const String category = '/category';
+  static const String custom = '/custom/:id';
+  static const String help = '/help';
 }
 
 class RouteNames {
   static const String splash = 'splash';
   static const String login = 'login';
   static const String home = 'home';
+  static const String help = 'help';
+  static const String privacy = 'privacy';
+  static const String about = 'about';
   static const String search = 'search';
   static const String explore = 'explore';
   static const String category = 'category';
   static const String profile = 'profile';
   static const String player = 'player';
+  static const String custom = 'custom';
 }
 
-/// 路由管理器
+@lazySingleton
 class RouterManager {
-  static final RouterManager _instance = RouterManager._internal();
-  factory RouterManager() => _instance;
-  RouterManager._internal();
+  RouterManager();
 
   final List<RouteConfig> _routes = [
     RouteConfig.page(
       path: RoutePaths.splash,
       name: RouteNames.splash,
       child: const HomeScreen(),
+    ),
+    RouteConfig.page(
+      path: RoutePaths.privacy,
+      name: RouteNames.privacy,
+      child: const PrivacyPolicyPage(),
+    ),
+    RouteConfig.page(
+      path: RoutePaths.help,
+      name: RouteNames.help,
+      child: const HelpFeedbackPage(),
     ),
     RouteConfig.page(
       path: RoutePaths.login,
@@ -63,6 +86,12 @@ class RouterManager {
       path: RoutePaths.home,
       name: RouteNames.home,
       child: const HomeScreen(),
+      redirectToLogin: false,
+    ),
+    RouteConfig.page(
+      path: RoutePaths.about,
+      name: RouteNames.about,
+      child: const AboutPage(),
       redirectToLogin: false,
     ),
     RouteConfig.page(
@@ -82,6 +111,14 @@ class RouterManager {
       name: RouteNames.profile,
       child: const ProfileScreen(),
       redirectToLogin: false,
+    ),
+    RouteConfig(
+      path: RoutePaths.custom,
+      name: RouteNames.custom,
+      builder: (context, state) {
+        final id = RouteParams.getParam(state, 'id');
+        return CustomScreen(categoryId: int.parse(id));
+      },
     ),
     RouteConfig(
       path: RoutePaths.player,
@@ -215,6 +252,7 @@ class NotFoundPage extends StatelessWidget {
               '您访问的页面可能已被移除或不存在',
               style: Theme.of(context).textTheme.bodyMedium,
             ),
+            Card(child: Lottie.asset('assets/lottie-404.json')),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () => context.go(RoutePaths.splash),

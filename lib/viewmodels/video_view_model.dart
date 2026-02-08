@@ -1,8 +1,10 @@
 import 'package:free_play_app/core/utils/logger.dart';
 import 'package:free_play_app/models/video.dart';
 import 'package:free_play_app/services/video_service.dart';
+import 'package:injectable/injectable.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 
+@injectable
 class VideoViewModel {
   final VideoService _api;
   VideoViewModel(this._api);
@@ -18,7 +20,7 @@ class VideoViewModel {
       videos.value = AsyncState.data(data);
     } catch (e) {
       videos.value = AsyncState.error(e);
-      Logger.error('Error loading videos: $e');
+      Logging.error('Error loading videos: $e');
     }
   }
 
@@ -36,7 +38,7 @@ class VideoViewModel {
       detail.value = AsyncState.data(data);
     } catch (e) {
       detail.value = AsyncState.error(e);
-      Logger.error('Error loading detail: $e');
+      Logging.error('Error loading detail: $e');
       rethrow;
     }
   }
@@ -52,7 +54,7 @@ class VideoViewModel {
       searchResults.value = AsyncState.data(data);
     } catch (e) {
       searchResults.value = AsyncState.error(e);
-      Logger.error('Error loading search: $e');
+      Logging.error('Error loading search: $e');
     }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -7,7 +8,6 @@ import 'package:free_play_app/screens/category/category_screen.dart';
 import 'package:free_play_app/screens/explore/explore_screen.dart';
 import 'package:free_play_app/screens/mine/profile_screen.dart';
 import 'package:free_play_app/services/video_service.dart';
-import 'package:free_play_app/widget/bottom_nav_bar.dart';
 import 'package:free_play_app/widget/error_text.dart';
 import 'package:free_play_app/widget/loading_indicator.dart';
 import 'package:free_play_app/widget/media_grid.dart';
@@ -15,25 +15,26 @@ import 'package:signals_hooks/signals_hooks.dart';
 
 class HomeScreen extends HookWidget {
   const HomeScreen({super.key});
+
   static const _navItems = [
-    BottomNavBarItem(
-      icon: Icons.home_outlined,
-      selectedIcon: Icons.home,
+    BottomNavigationBarItem(
+      icon: Icon(Icons.home_outlined),
+      activeIcon: Icon(Icons.home),
       label: '主页',
     ),
-    BottomNavBarItem(
-      icon: Icons.explore_outlined,
-      selectedIcon: Icons.explore,
+    BottomNavigationBarItem(
+      icon: Icon(Icons.explore_outlined),
+      activeIcon: Icon(Icons.explore),
       label: '发现',
     ),
-    BottomNavBarItem(
-      icon: Icons.category_outlined,
-      selectedIcon: Icons.category,
+    BottomNavigationBarItem(
+      icon: Icon(Icons.category_outlined),
+      activeIcon: Icon(Icons.category),
       label: '分类',
     ),
-    BottomNavBarItem(
-      icon: Icons.person_outline,
-      selectedIcon: Icons.person,
+    BottomNavigationBarItem(
+      icon: Icon(Icons.person_outline),
+      activeIcon: Icon(Icons.person),
       label: '个人',
     ),
   ];
@@ -51,10 +52,13 @@ class HomeScreen extends HookWidget {
     );
     return Scaffold(
       body: IndexedStack(index: bottomIndex.value, children: pages),
-      bottomNavigationBar: BottomNavBar(
-        selectedIndex: bottomIndex.value,
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: bottomIndex.value,
+        onTap: (index) {
+          bottomIndex.value = index;
+        },
+        type: BottomNavigationBarType.fixed,
         items: _navItems,
-        onTap: (index) => bottomIndex.value = index,
       ),
     );
   }
@@ -75,9 +79,26 @@ Widget _buildPage(int index, ValueKey key) {
   }
 }
 
+class CarouselItems {
+  final int id;
+  final String url;
+  const CarouselItems({required this.id, required this.url});
+}
+
 class HomeContent extends HookWidget {
   const HomeContent({super.key});
-
+  static const _carouselItems = [
+    CarouselItems(
+      id: 1,
+      url:
+          "https://image.jinyingimage.com//cover//1f2bf1b9f0b44788ea5059094d143336.jpg",
+    ),
+    CarouselItems(
+      id: 2,
+      url:
+          "https://image.jinyingimage.com//cover//fc79ab52a86965408d9a2cfd13fcef69.jpg",
+    ),
+  ];
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -129,19 +150,17 @@ class HomeContent extends HookWidget {
                           viewportFraction: 1.0,
                           padEnds: false,
                         ),
-                        items: [1, 2, 3, 4].map((i) {
+                        items: _carouselItems.map((carousel) {
                           return Builder(
                             builder: (BuildContext context) {
                               return Container(
                                 width: MediaQuery.of(context).size.width,
-                                decoration: const BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      Color(0xFF6FAFD8),
-                                      Color(0xFF3D6D8F),
-                                    ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: CachedNetworkImageProvider(
+                                      carousel.url,
+                                    ),
+                                    fit: BoxFit.cover, // 关键：填充容器
                                   ),
                                 ),
                                 child: Padding(
@@ -160,7 +179,7 @@ class HomeContent extends HookWidget {
                                       ),
                                       const SizedBox(height: 8),
                                       Text(
-                                        '热播第 $i 期',
+                                        '热播第 ${carousel.id} 期',
                                         style: theme.textTheme.bodyMedium
                                             ?.copyWith(color: Colors.white70),
                                       ),
@@ -219,7 +238,7 @@ class HomeContent extends HookWidget {
                         },
                       ),
                       MediaGrid(
-                        title: '热门电视剧',
+                        title: '热门剧集',
                         page: RouterManager.currentPage,
                         mediaItems: videos.map((video) {
                           return MediaGridItem(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:free_play_app/core/theme/app_theme.dart';
 
 /// 热播类型宫格组件
 class PopularCategoriesGrid extends StatelessWidget {
@@ -70,7 +71,7 @@ class _CategoryGridItem extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppThemes.getCardColor(context),
               shape: .circle,
               boxShadow: [
                 BoxShadow(
@@ -99,6 +100,8 @@ class _CategoryGridItem extends StatelessWidget {
 
 /// 类型数据模型
 class CategoryItem {
+  final int id;
+
   /// 类型标题
   final String title;
 
@@ -108,5 +111,10 @@ class CategoryItem {
   /// 颜色
   final Color color;
 
-  CategoryItem({required this.title, required this.icon, required this.color});
+  CategoryItem({
+    required this.title,
+    required this.icon,
+    required this.color,
+    required this.id,
+  });
 }
