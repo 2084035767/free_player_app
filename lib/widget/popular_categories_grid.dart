@@ -38,7 +38,7 @@ class PopularCategoriesGrid extends StatelessWidget {
           GridView.builder(
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 4,
-              crossAxisSpacing: 12, // 建议减小间距（64 太大了）
+              crossAxisSpacing: 12,
               mainAxisSpacing: 12,
             ),
             shrinkWrap: true,

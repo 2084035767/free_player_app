@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 
 /// 应用主题模式
@@ -12,7 +12,7 @@ enum AppThemeMode {
   final IconData icon;
   final String label;
   IconData get iconData =>
-      this == AppThemeMode.dark ? Icons.sunny : Icons.nights_stay;
+      this == AppThemeMode.dark ? LineIcons.sun : LineIcons.moon;
   AppThemeMode get toggled =>
       this == AppThemeMode.dark ? AppThemeMode.light : AppThemeMode.dark;
 }

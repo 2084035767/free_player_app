@@ -124,10 +124,7 @@ class AppThemes {
       tabBarTheme: TabBarThemeData(
         dividerHeight: 0,
         indicator: UnderlineTabIndicator(
-          borderSide: BorderSide(
-            color: mediumGray,
-            width: 2.0, // 线条高度
-          ),
+          borderSide: BorderSide(color: mediumGray, width: 2.0),
           insets: EdgeInsets.only(bottom: 2),
         ),
         labelColor: primaryGray,
@@ -137,7 +134,7 @@ class AppThemes {
       cardTheme: CardThemeData(
         color: cardColor,
         elevation: 0.5, // 减少阴影
-        shadowColor: Colors.black.withValues(alpha: 0.06), // 减少阴影透明度
+        shadowColor: darkCardColor.withValues(alpha: 0.06), // 减少阴影透明度
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(12)), // 减少圆角
         ),
@@ -150,7 +147,7 @@ class AppThemes {
           maxHeight: 60,
         ),
         shadowColor: WidgetStateProperty.all(
-          Colors.black.withValues(alpha: .06),
+          darkCardColor.withValues(alpha: .06),
         ),
         shape: WidgetStateProperty.all(
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -198,8 +195,8 @@ class AppThemes {
 
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: primaryGray,
-          foregroundColor: Colors.white,
+          backgroundColor: coolGray50,
+          foregroundColor: primaryGray,
           elevation: 0.5, // 减少阴影
           padding: const EdgeInsets.symmetric(
             horizontal: 20,
@@ -256,14 +253,13 @@ class AppThemes {
         color: coolGray500,
       ),
 
-      // 添加Chip主题
       chipTheme: ChipThemeData(
         elevation: 0.5,
         side: BorderSide.none,
-        color: WidgetStateProperty.all(coolGray200),
+        color: WidgetStateProperty.all(coolGray100),
         shadowColor: Colors.black.withValues(alpha: 0.06),
-        backgroundColor: coolGray100,
-        labelStyle: TextStyle(fontSize: 12, color: coolGray700),
+        // backgroundColor: coolGray200,
+        labelStyle: TextStyle(fontSize: 12, color: primaryTextColor),
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       ),
       visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -274,19 +270,15 @@ class AppThemes {
   static ThemeData _buildDarkTheme() {
     final base = ThemeData.dark();
     return base.copyWith(
-      // primarySwatch: Colors.blueGrey,
       primaryColor: darkPrimaryGray,
       scaffoldBackgroundColor: darkBackgroundColor,
       brightness: Brightness.dark,
       searchBarTheme: SearchBarThemeData(
         backgroundColor: WidgetStateProperty.all(darkCardColor),
         elevation: WidgetStateProperty.all(0.5),
-        constraints: BoxConstraints(
-          minHeight: 48, // 保证最小点击区域（符合无障碍标准）
-          maxHeight: 60,
-        ),
+        constraints: BoxConstraints(minHeight: 48, maxHeight: 60),
         shadowColor: WidgetStateProperty.all(
-          Colors.black.withValues(alpha: .06),
+          darkCardColor.withValues(alpha: .06),
         ),
         shape: WidgetStateProperty.all(
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -307,12 +299,12 @@ class AppThemes {
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: darkBackgroundColor.withValues(alpha: .8),
-        selectedItemColor: primaryGray,
+        selectedItemColor: darkPrimaryGray,
       ),
       cardTheme: CardThemeData(
         color: darkCardColor,
         elevation: 0.5,
-        shadowColor: Colors.black.withValues(alpha: .2),
+        shadowColor: darkCardColor.withValues(alpha: .2),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(12)),
         ),
@@ -356,8 +348,8 @@ class AppThemes {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: darkAccentBlue,
-          foregroundColor: Colors.black,
+          backgroundColor: coolGray800,
+          foregroundColor: darkPrimaryGray,
           elevation: 0.5,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           shape: RoundedRectangleBorder(
@@ -384,13 +376,11 @@ class AppThemes {
       ),
 
       appBarTheme: AppBarTheme(
-        backgroundColor: darkBackgroundColor.withValues(
-          alpha: .8,
-        ), // 亚克力效果 - 半透明
+        backgroundColor: darkBackgroundColor.withValues(alpha: .8),
         foregroundColor: coolGray200,
         elevation: 0,
-        scrolledUnderElevation: 8, // 滚动时的阴影
-        surfaceTintColor: darkCardColor.withValues(alpha: .3), // 滚动时的着色
+        scrolledUnderElevation: 8,
+        surfaceTintColor: darkCardColor.withValues(alpha: .3),
         systemOverlayStyle: const SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
           statusBarIconBrightness: Brightness.light,
@@ -401,7 +391,6 @@ class AppThemes {
           fontWeight: FontWeight.w600,
           color: coolGray200,
         ),
-        // 亚克力模糊效果需要在具体使用时通过BackdropFilter实现
       ),
 
       listTileTheme: ListTileThemeData(
@@ -412,18 +401,22 @@ class AppThemes {
         iconColor: coolGray400,
       ),
 
-      iconTheme: IconThemeData(size: 20, color: coolGray400),
+      iconTheme: IconThemeData(size: 20, color: coolGray800),
 
       chipTheme: ChipThemeData(
         elevation: 0.5,
         side: BorderSide.none,
-        color: WidgetStateProperty.all(coolGray400),
+        color: WidgetStateProperty.all(coolGray800),
         shadowColor: Colors.black.withValues(alpha: 0.06),
-        backgroundColor: coolGray700,
+        // backgroundColor: coolGray800,
         labelStyle: TextStyle(fontSize: 12, color: coolGray200),
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       ),
-
+      // switchTheme: SwitchThemeData(
+      //   thumbColor: WidgetStateProperty.all(AppThemes.primaryGray),
+      //   inactiveThumbColor: WidgetStateProperty.all(AppThemes.darkGray),
+      //   inactiveTrackColor: WidgetStateProperty.all(AppThemes.darkPrimaryGray),
+      // ),
       visualDensity: VisualDensity.adaptivePlatformDensity,
     );
   }

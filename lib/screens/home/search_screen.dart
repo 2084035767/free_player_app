@@ -1,10 +1,12 @@
+import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:free_play_app/core/router/router_manager.dart';
 import 'package:free_play_app/di/service_locator.dart';
 import 'package:free_play_app/services/video_service.dart';
-import 'package:free_play_app/widget/error_text.dart';
+import 'package:free_play_app/widget/error_page.dart';
 import 'package:free_play_app/widget/loading_indicator.dart';
+import 'package:free_play_app/widget/media_card.dart';
 import 'package:free_play_app/widget/media_page.dart';
 import 'package:signals_hooks/signals_hooks.dart';
 
@@ -20,7 +22,7 @@ class SearchScreen extends HookWidget {
     final query = useSignal('');
     final history = useSignal<List<String>>([]);
     final hotKeywords = useMemoized(
-      () => <String>['周星驰', '海贼王', '三体', '复仇者联盟', '流浪地球', '庆余年'],
+      () => <String>['复仇者联盟', '流浪地球', '庆余年', '周星驰', '海贼王', '三体'],
     );
     final results = useFutureSignal(
       () => vs.fetchSearch(query.value),
@@ -41,6 +43,10 @@ class SearchScreen extends HookWidget {
       FocusScope.of(context).unfocus();
     }
 
+    EasyRefreshController ercontroller = EasyRefreshController(
+      controlFinishRefresh: true,
+      controlFinishLoad: true,
+    );
     return Watch.builder(
       builder: (context) {
         return Scaffold(
@@ -115,17 +121,11 @@ class SearchScreen extends HookWidget {
                           ],
                         ),
                         Wrap(
-                          spacing: 8,
-                          runSpacing: 8,
+                          spacing: 3,
+                          runSpacing: 2,
                           children: history.value.map((item) {
                             return ActionChip(
                               label: Text(item),
-                              // elevation: 0.5,
-                              // side: BorderSide.none,
-                              // color: WidgetStateProperty.all(
-                              //   Colors.grey.shade100,
-                              // ),
-                              // shadowColor: Colors.black.withValues(alpha: 0.06),
                               onPressed: () => doSearch(item),
                             );
                           }).toList(),
@@ -140,12 +140,6 @@ class SearchScreen extends HookWidget {
                         children: hotKeywords.map((item) {
                           return ActionChip(
                             label: Text(item),
-                            // elevation: 0.5,
-                            // side: BorderSide.none,
-                            // color: WidgetStateProperty.all(
-                            //   Colors.grey.shade100,
-                            // ),
-                            // shadowColor: Colors.black.withValues(alpha: 0.06),
                             onPressed: () => doSearch(item),
                           );
                         }).toList(),
@@ -188,8 +182,11 @@ class SearchScreen extends HookWidget {
                                     ),
                                     const SizedBox(height: 12),
                                     MediaPage(
+                                      refresh: () {},
+                                      load: () {},
+                                      controller: ercontroller,
                                       mediaItems: videos.map((video) {
-                                        return MediaPageItem(
+                                        return Media(
                                           id: video.vodId,
                                           title: video.vodName,
                                           posterUrl: video.vodPic,
@@ -215,12 +212,9 @@ class SearchScreen extends HookWidget {
                           padding: EdgeInsets.symmetric(vertical: 48),
                           child: LoadingIndicator(),
                         ),
-                        AsyncError(error: final error) => Padding(
+                        AsyncError() => Padding(
                           padding: const EdgeInsets.symmetric(vertical: 48),
-                          child: ErrorText(
-                            error: error,
-                            onRetry: () => vs.fetchSearch(query.value),
-                          ),
+                          child: ErrorPage(),
                         ),
                       },
                     ],

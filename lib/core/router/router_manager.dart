@@ -7,9 +7,14 @@ import 'package:free_play_app/screens/explore/explore_screen.dart';
 import 'package:free_play_app/screens/home/home_screen.dart';
 import 'package:free_play_app/screens/home/search_screen.dart';
 import 'package:free_play_app/screens/mine/about_page.dart';
+import 'package:free_play_app/screens/mine/downloads_page.dart';
+import 'package:free_play_app/screens/mine/favorites_page.dart';
 import 'package:free_play_app/screens/mine/help_feedback_page.dart';
+import 'package:free_play_app/screens/mine/history_page.dart';
 import 'package:free_play_app/screens/mine/privacy_policy_page.dart';
 import 'package:free_play_app/screens/mine/profile_screen.dart';
+import 'package:free_play_app/screens/mine/settings_page.dart';
+import 'package:free_play_app/screens/mine/watch_later_page.dart';
 import 'package:free_play_app/screens/play/player_screen.dart';
 import 'package:free_play_app/viewmodels/auth_view_model.dart';
 import 'package:get_it/get_it.dart';
@@ -29,6 +34,10 @@ class RoutePaths {
   static const String profile = '/profile';
   static const String about = '/about';
   static const String settings = '/settings';
+  static const String favorites = '/favorites';
+  static const String downloads = '/downloads';
+  static const String watchLater = '/watch-later';
+  static const String history = '/history';  // 添加历史记录路由路径
   static const String player = '/player/:id';
   static const String explore = '/explore';
   static const String privacy = '/privacy';
@@ -50,6 +59,11 @@ class RouteNames {
   static const String profile = 'profile';
   static const String player = 'player';
   static const String custom = 'custom';
+  static const String settings = 'settings';
+  static const String favorites = 'favorites';
+  static const String downloads = 'downloads';
+  static const String watchLater = 'watchLater';
+  static const String history = 'history';  // 添加历史记录路由名称
 }
 
 @lazySingleton
@@ -71,6 +85,36 @@ class RouterManager {
       path: RoutePaths.help,
       name: RouteNames.help,
       child: const HelpFeedbackPage(),
+    ),
+    RouteConfig.page(
+      path: RoutePaths.settings,
+      name: RouteNames.settings,
+      child: const SettingsPage(),
+      redirectToLogin: false,
+    ),
+    RouteConfig.page(
+      path: RoutePaths.favorites,
+      name: RouteNames.favorites,
+      child: const FavoritesPage(),
+      redirectToLogin: false,
+    ),
+    RouteConfig.page(
+      path: RoutePaths.downloads,
+      name: RouteNames.downloads,
+      child: const DownloadsPage(),
+      redirectToLogin: false,
+    ),
+    RouteConfig.page(
+      path: RoutePaths.watchLater,
+      name: RouteNames.watchLater,
+      child: const WatchLaterPage(),
+      redirectToLogin: false,
+    ),
+    RouteConfig.page(
+      path: RoutePaths.history,
+      name: RouteNames.history,
+      child: const HistoryPage(),
+      redirectToLogin: false,
     ),
     RouteConfig.page(
       path: RoutePaths.login,
@@ -252,7 +296,7 @@ class NotFoundPage extends StatelessWidget {
               '您访问的页面可能已被移除或不存在',
               style: Theme.of(context).textTheme.bodyMedium,
             ),
-            Card(child: Lottie.asset('assets/lottie-404.json')),
+            Card(child: Lottie.asset('assets/json/lottie-404.json')),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () => context.go(RoutePaths.splash),

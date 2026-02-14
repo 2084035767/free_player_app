@@ -10,6 +10,7 @@ import 'package:free_play_app/screens/mine/profile_screen.dart';
 import 'package:free_play_app/services/video_service.dart';
 import 'package:free_play_app/widget/error_text.dart';
 import 'package:free_play_app/widget/loading_indicator.dart';
+import 'package:free_play_app/widget/media_card.dart';
 import 'package:free_play_app/widget/media_grid.dart';
 import 'package:signals_hooks/signals_hooks.dart';
 
@@ -105,6 +106,8 @@ class HomeContent extends HookWidget {
     final cardRadius = BorderRadius.circular(16);
     final vs = useMemoized(() => getIt<VideoService>());
     final popular = useFutureSignal(() => vs.fetchPopular());
+    final movies = useFutureSignal(() => vs.fetchMovies());
+    final tv = useFutureSignal(() => vs.fetchTv());
 
     return Scaffold(
       appBar: AppBar(
@@ -194,14 +197,14 @@ class HomeContent extends HookWidget {
                     ),
                   ),
                 ),
-                switch (popular.value) {
-                  AsyncData(value: final videos) => Column(
-                    children: [
-                      MediaGrid(
+                Column(
+                  children: [
+                    switch (popular.value) {
+                      AsyncData(value: final videos) => MediaGrid(
                         title: '热门推荐',
                         page: RouterManager.currentPage,
                         mediaItems: videos.map((video) {
-                          return MediaGridItem(
+                          return Media(
                             id: video.vodId,
                             title: video.vodName,
                             posterUrl: video.vodPic,
@@ -217,11 +220,21 @@ class HomeContent extends HookWidget {
                           );
                         },
                       ),
-                      MediaGrid(
+                      AsyncLoading() => const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 48),
+                        child: LoadingIndicator(),
+                      ),
+                      AsyncError(error: final error) => Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 48),
+                        child: ErrorText(error: error),
+                      ),
+                    },
+                    switch (movies.value) {
+                      AsyncData(value: final videos) => MediaGrid(
                         title: '热门电影',
                         page: RouterManager.currentPage,
                         mediaItems: videos.map((video) {
-                          return MediaGridItem(
+                          return Media(
                             id: video.vodId,
                             title: video.vodName,
                             posterUrl: video.vodPic,
@@ -237,11 +250,21 @@ class HomeContent extends HookWidget {
                           );
                         },
                       ),
-                      MediaGrid(
+                      AsyncLoading() => const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 48),
+                        child: LoadingIndicator(),
+                      ),
+                      AsyncError(error: final error) => Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 48),
+                        child: ErrorText(error: error),
+                      ),
+                    },
+                    switch (tv.value) {
+                      AsyncData(value: final videos) => MediaGrid(
                         title: '热门剧集',
                         page: RouterManager.currentPage,
                         mediaItems: videos.map((video) {
-                          return MediaGridItem(
+                          return Media(
                             id: video.vodId,
                             title: video.vodName,
                             posterUrl: video.vodPic,
@@ -257,18 +280,17 @@ class HomeContent extends HookWidget {
                           );
                         },
                       ),
-                    ],
-                  ),
-                  AsyncLoading() => const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 48),
-                    child: LoadingIndicator(),
-                  ),
-                  AsyncError(error: final error) => Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 48),
-                    child: ErrorText(error: error),
-                  ),
-                },
-                const SizedBox(height: 24),
+                      AsyncLoading() => const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 48),
+                        child: LoadingIndicator(),
+                      ),
+                      AsyncError(error: final error) => Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 48),
+                        child: ErrorText(error: error),
+                      ),
+                    },
+                  ],
+                ),
               ],
             ),
           );

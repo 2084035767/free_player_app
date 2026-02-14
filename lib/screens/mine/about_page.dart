@@ -15,7 +15,9 @@ class AboutPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('关于'),
         centerTitle: true,
-        actions: [IconButton(onPressed: () {}, icon: Icon(LineIcons.cat))],
+        actions: [
+          IconButton(onPressed: () {}, icon: Icon(LineIcons.horseHead)),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),

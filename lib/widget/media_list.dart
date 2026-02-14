@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:free_play_app/widget/media_card.dart';
 
-/// 影视内容列表组件（横行）
-class MediaScroll extends StatelessWidget {
+/// 视频列表组件
+class MediaList extends StatelessWidget {
   /// 影视内容列表
   final List<Media> mediaItems;
 
@@ -18,7 +18,7 @@ class MediaScroll extends StatelessWidget {
   final double listHeight;
   final double itemWidth;
 
-  const MediaScroll({
+  const MediaList({
     super.key,
     required this.mediaItems,
     required this.title,
@@ -47,7 +47,6 @@ class MediaScroll extends StatelessWidget {
           SizedBox(
             height: listHeight,
             child: ListView.builder(
-              scrollDirection: Axis.horizontal,
               shrinkWrap: true,
               itemExtent: 120,
               physics: const ClampingScrollPhysics(),

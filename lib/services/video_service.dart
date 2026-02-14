@@ -32,9 +32,17 @@ class VideoService {
   Future<List<Video>> fetchCategory(int t) async {
     try {
       final res = await dio.get('?ac=detail&t=$t');
-      return List<Video>.from(
-        res['list'].map((x) => Video.fromJson(x)),
-      );
+      return List<Video>.from(res['list'].map((x) => Video.fromJson(x)));
+    } catch (e) {
+      Logging.error('Error fetching detail: $e');
+      rethrow;
+    }
+  }
+
+  Future<List<Video>> fetchCategoryPage(int t, int page) async {
+    try {
+      final res = await dio.get('?ac=detail&t=$t&pg=$page');
+      return List<Video>.from(res['list'].map((x) => Video.fromJson(x)));
     } catch (e) {
       Logging.error('Error fetching detail: $e');
       rethrow;
@@ -43,7 +51,37 @@ class VideoService {
 
   Future<List<Video>> fetchPopular() async {
     try {
-      final res = await dio.get('?ac=detail&h=24');
+      final res = await dio.get('?ac=detail');
+      return List<Video>.from(res['list'].map((x) => Video.fromJson(x)));
+    } catch (e) {
+      Logging.error('Error fetching detail: $e');
+      rethrow;
+    }
+  }
+
+  Future<List<Video>> fetchMovies() async {
+    try {
+      final res = await dio.get('?ac=detail&t=11');
+      return List<Video>.from(res['list'].map((x) => Video.fromJson(x)));
+    } catch (e) {
+      Logging.error('Error fetching detail: $e');
+      rethrow;
+    }
+  }
+
+  Future<List<Video>> fetchTv() async {
+    try {
+      final res = await dio.get('?ac=detail&t=3');
+      return List<Video>.from(res['list'].map((x) => Video.fromJson(x)));
+    } catch (e) {
+      Logging.error('Error fetching detail: $e');
+      rethrow;
+    }
+  }
+
+  Future<List<Video>> fetchShow() async {
+    try {
+      final res = await dio.get('?ac=detail&t=27');
       return List<Video>.from(res['list'].map((x) => Video.fromJson(x)));
     } catch (e) {
       Logging.error('Error fetching detail: $e');

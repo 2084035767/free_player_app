@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:free_play_app/core/app_config.dart';
 import 'package:free_play_app/core/router/router_manager.dart';
 import 'package:free_play_app/di/service_locator.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:signals_hooks/signals_hooks.dart';
 
 class ProfileScreen extends HookWidget {
@@ -31,9 +32,8 @@ class ProfileScreen extends HookWidget {
         physics: const ClampingScrollPhysics(),
         child: Column(
           children: [
-            // 用户信息区域
-            Container(
-              padding: const EdgeInsets.all(20),
+            Padding(
+              padding: EdgeInsets.all(16),
               child: Row(
                 children: [
                   // 用户头像
@@ -70,7 +70,6 @@ class ProfileScreen extends HookWidget {
                 ],
               ),
             ),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -121,85 +120,75 @@ class ProfileScreen extends HookWidget {
                 ),
               ],
             ),
+
             const SizedBox(height: 20),
             // 功能列表
             ListTile(
-              leading: const Icon(Icons.history, color: Colors.blue),
+              leading: const Icon(LineIcons.history, color: Colors.blue),
               title: const Text('观看历史'),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              trailing: const Icon(LineIcons.angleRight, size: 16),
               onTap: () {
-                // TODO: 跳转到观看历史页面
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(const SnackBar(content: Text('观看历史功能待开发')));
+                // 导航到观看历史页面
+                RouterManager.pushNamed(context, RouteNames.history);
               },
             ),
             ListTile(
-              leading: const Icon(Icons.favorite, color: Colors.red),
+              leading: const Icon(LineIcons.heart, color: Colors.red),
               title: const Text('我的收藏'),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              trailing: const Icon(LineIcons.angleRight, size: 16),
               onTap: () {
-                // TODO: 跳转到收藏页面
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(const SnackBar(content: Text('我的收藏功能待开发')));
+                RouterManager.pushNamed(context, RouteNames.favorites);
               },
             ),
             ListTile(
-              leading: const Icon(Icons.download, color: Colors.grey),
+              leading: const Icon(
+                LineIcons.download,
+                color: Colors.greenAccent,
+              ),
               title: const Text('我的下载'),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              trailing: const Icon(LineIcons.angleRight, size: 16),
               onTap: () {
-                // TODO: 跳转到下载页面
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(const SnackBar(content: Text('我的下载功能待开发')));
+                RouterManager.pushNamed(context, RouteNames.downloads);
               },
             ),
             ListTile(
-              leading: const Icon(Icons.access_time, color: Colors.orange),
+              leading: const Icon(LineIcons.clock, color: Colors.orange),
               title: const Text('稍后观看'),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              trailing: const Icon(LineIcons.angleRight, size: 16),
               onTap: () {
-                // TODO: 跳转到稍后观看页面
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(const SnackBar(content: Text('稍后观看功能待开发')));
+                RouterManager.pushNamed(context, RouteNames.watchLater);
               },
             ),
             const SizedBox(height: 10),
             ListTile(
-              leading: const Icon(Icons.settings, color: Colors.grey),
+              leading: const Icon(LineIcons.cog, color: Colors.grey),
               title: const Text('设置'),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              trailing: const Icon(LineIcons.angleRight, size: 16),
               onTap: () {
-                // TODO: 跳转到设置页面
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(const SnackBar(content: Text('设置功能待开发')));
+                RouterManager.pushNamed(context, RouteNames.settings);
               },
             ),
 
             ListTile(
               leading: const Icon(Icons.help, color: Colors.grey),
               title: const Text('帮助与反馈'),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              trailing: const Icon(LineIcons.angleRight, size: 16),
               onTap: () {
                 RouterManager.pushNamed(context, RouteNames.help);
               },
             ),
             ListTile(
-              leading: const Icon(Icons.privacy_tip, color: Colors.grey),
+              leading: const Icon(Icons.policy_outlined, color: Colors.grey),
               title: const Text('隐私政策'),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              trailing: const Icon(LineIcons.angleRight, size: 16),
               onTap: () {
                 RouterManager.pushNamed(context, RouteNames.privacy);
               },
             ),
             ListTile(
               leading: const Icon(Icons.info, color: Colors.grey),
-              title: const Text('关于我'),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              title: const Text('关于应用'),
+              trailing: const Icon(LineIcons.angleRight, size: 16),
               onTap: () {
                 RouterManager.pushNamed(context, RouteNames.about);
               },

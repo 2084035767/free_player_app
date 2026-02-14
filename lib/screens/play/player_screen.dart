@@ -1,10 +1,15 @@
 import 'package:better_player_plus/better_player_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:free_play_app/core/router/router_manager.dart';
 import 'package:free_play_app/core/utils/url_util.dart';
 import 'package:free_play_app/di/service_locator.dart';
 import 'package:free_play_app/services/video_service.dart';
+import 'package:free_play_app/widget/error_text.dart';
+import 'package:free_play_app/widget/expandable_text.dart';
+import 'package:free_play_app/widget/loading_indicator.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:signals_hooks/signals_hooks.dart';
 
 class PlayerPage extends HookWidget {
@@ -43,11 +48,19 @@ class PlayerPage extends HookWidget {
               qualityAuto: '自动', // 严重修正："汽車"（汽车）→ "自动"
             ),
           ],
-          autoDispose: true,
+          controlsConfiguration: BetterPlayerControlsConfiguration(
+            playIcon: LineIcons.play,
+            pauseIcon: LineIcons.pause,
+            muteIcon: LineIcons.volumeUp,
+            unMuteIcon: LineIcons.volumeOff,
+            fullscreenEnableIcon: LineIcons.expand,
+            fullscreenDisableIcon: LineIcons.compress,
+          ),
           // placeholder: NetworkImage(currentPlayUrl.value),
         ),
       ),
     );
+
     final detail = useFutureSignal(
       () => api.fetchDetail(detailId.value),
       dependencies: [detailId],
@@ -62,7 +75,7 @@ class PlayerPage extends HookWidget {
     useEffect(() {
       detail.value.map(
         data: (video) {
-          playUrls.value = UrlUtil.parseUrls(video.vodPlayUrl);
+          playUrls.value = StrUtil.parseUrls(video.vodPlayUrl);
           count.value = playUrls.value.length;
           if (playUrls.isEmpty) {
             debugPrint('⚠️ 无有效播放地址');
@@ -82,8 +95,12 @@ class PlayerPage extends HookWidget {
       );
       controller.setupDataSource(dataSource);
     });
-
-    useSignalEffect(() {});
+    useEffect(() {
+      return () {
+        controller.dispose();
+      };
+    }, [controller]);
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -91,7 +108,7 @@ class PlayerPage extends HookWidget {
           onPressed: () => RouterManager.pop(context),
         ),
         backgroundColor: Colors.transparent,
-        elevation: 0, // 去掉阴影
+        elevation: 0,
         title: detail.value.map(
           data: (video) =>
               Text('${video.vodName} - 第${currentIndex.value + 1}集'),
@@ -131,20 +148,13 @@ class PlayerPage extends HookWidget {
                         ),
                         const SizedBox(height: 6),
                         Text(
-                          '${detail.vodYear} · ${detail.vodClass} · ${detail.vodDuration}',
-                          style: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey,
-                          ),
+                          '${detail.vodYear} | ${detail.vodArea} | ${detail.vodClass}',
+                          style: theme.textTheme.bodyLarge?.copyWith(),
                         ),
                         const SizedBox(height: 6),
-                        Text(
-                          detail.vodBlurb,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.black,
-                          ),
-                          maxLines: 4,
+                        ExpandableText(
+                          text: StrUtil.cleanDescription(detail.vodContent),
+                          style: theme.textTheme.bodyLarge?.copyWith(),
                         ),
                         const SizedBox(height: 8),
                         Row(
@@ -154,7 +164,7 @@ class PlayerPage extends HookWidget {
                             Expanded(
                               child: ElevatedButton(
                                 onPressed: () => controller.play(),
-                                child: const Text('播放'),
+                                child: Icon(LineIcons.play),
                               ),
                             ),
                             ElevatedButton(
@@ -163,7 +173,7 @@ class PlayerPage extends HookWidget {
                             ),
                             ElevatedButton(
                               onPressed: () {},
-                              child: Icon(Icons.bookmark),
+                              child: Icon(LineIcons.bookmark),
                             ),
                             ElevatedButton(
                               onPressed: () {},
@@ -184,11 +194,8 @@ class PlayerPage extends HookWidget {
                             ),
 
                             Text(
-                              '全${count.value}集',
-                              style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.normal,
-                              ),
+                              '${count.value}集',
+                              style: theme.textTheme.bodyMedium?.copyWith(),
                             ),
                           ],
                         ),
@@ -205,24 +212,26 @@ class PlayerPage extends HookWidget {
                           physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) => Padding(
                             padding: EdgeInsets.symmetric(vertical: 10),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                currentIndex.value = index;
-                              },
-                              child: Center(child: Text('${index + 1}')),
-                            ),
+                            child:
+                                ElevatedButton(
+                                      onPressed: () {
+                                        currentIndex.value = index;
+                                      },
+                                      child: Center(
+                                        child: Text('${index + 1}'),
+                                      ),
+                                    )
+                                    .animate()
+                                    .fadeIn(duration: 300.ms)
+                                    .slideY(begin: 0.2),
                           ),
                         ),
                       ],
                     ),
                   ),
                 ),
-                AsyncLoading() => const Center(
-                  child: CircularProgressIndicator(),
-                ),
-                AsyncError(error: final error) => Text(
-                  'Error: ${error.toString()}',
-                ),
+                AsyncLoading() => const Center(child: LoadingIndicator()),
+                AsyncError(error: final error) => ErrorText(error: error),
               },
             ],
           );

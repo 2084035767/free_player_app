@@ -19,6 +19,7 @@ abstract class Video with _$Video {
     @JsonKey(name: 'vod_area') required String vodArea,
     @JsonKey(name: 'vod_douban_score') required String vodDoubanScore,
     @JsonKey(name: 'vod_year') required String vodYear,
+    @JsonKey(name: 'vod_content') required String vodContent,
     @JsonKey(name: 'vod_remarks') required String vodRemarks,
     @JsonKey(name: 'vod_play_from') required String vodPlayFrom,
     @JsonKey(name: 'vod_play_url') required String vodPlayUrl,

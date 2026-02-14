@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-class LoadingIndicator extends StatelessWidget {
-  const LoadingIndicator({super.key, this.size = 80.0, this.color});
+class LoadingCard extends StatelessWidget {
+  const LoadingCard({super.key, this.size = 40.0, this.color});
   final double size;
   final Color? color;
   @override
@@ -11,12 +11,7 @@ class LoadingIndicator extends StatelessWidget {
       child: SizedBox(
         width: size,
         height: size,
-        child: Center(
-          child: Lottie
-          .asset(
-            'assets/json/davsan.json',
-          ),
-        ),
+        child: Center(child: Lottie.asset('assets/json/sand.json')),
       ),
     );
   }
