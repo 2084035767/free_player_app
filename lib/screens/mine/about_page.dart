@@ -20,35 +20,20 @@ class AboutPage extends StatelessWidget {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
               child: Column(
                 children: [
-                  Container(
-                    width: 80,
-                    height: 80,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primary,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.movie,
-                      size: 48,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
                   Row(
                     mainAxisAlignment: .center,
                     children: [
                       Text(
                         'Free Player',
-                        style: Theme.of(
-                          context,
-                        ).textTheme.headlineLarge?.copyWith(),
+                        style: Theme.of(context).textTheme.headlineLarge
+                            ?.copyWith(color: AppThemes.primaryTextColor),
                       ),
                       IconButton(
                         onPressed: () => _launchUrl(_githubUrl, context),
@@ -60,7 +45,7 @@ class AboutPage extends StatelessWidget {
                   Text(
                     '一个基础 flutter 构建的网络视频播放器',
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.secondary,
+                      color: AppThemes.secondaryTextColor,
                       fontSize: 16,
                     ),
                   ),
@@ -88,7 +73,7 @@ class AboutPage extends StatelessWidget {
               onPressed: () => _showFullDisclaimer(context),
               child: const Text(
                 '查看完整免责声明',
-                style: TextStyle(color: Colors.blue),
+                style: TextStyle(color: AppThemes.secondaryTextColor),
               ),
             ),
             const SizedBox(height: 24),
@@ -196,7 +181,10 @@ class AboutPage extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
-            child: const Text('我已知晓'),
+            child: const Text(
+              '我已知晓',
+              style: TextStyle(color: AppThemes.secondaryTextColor),
+            ),
           ),
         ],
       ),

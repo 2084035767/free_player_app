@@ -42,7 +42,7 @@ class MediaPage extends StatelessWidget {
       child: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
-          crossAxisSpacing: 12,
+          crossAxisSpacing: 6,
           mainAxisSpacing: 12,
           childAspectRatio: 2 / 3,
         ),

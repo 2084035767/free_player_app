@@ -131,6 +131,7 @@ class AppThemes {
         unselectedLabelColor: Colors.grey,
         indicatorSize: TabBarIndicatorSize.label,
       ),
+
       cardTheme: CardThemeData(
         color: cardColor,
         elevation: 0.5, // 减少阴影
@@ -234,8 +235,6 @@ class AppThemes {
           borderSide: BorderSide(color: coolGray300, width: 1),
         ),
       ),
-
-      // 添加ListTile主题，减少列表项高度
       listTileTheme: ListTileThemeData(
         minTileHeight: 48.0,
         horizontalTitleGap: 12.0,
@@ -393,14 +392,6 @@ class AppThemes {
         ),
       ),
 
-      listTileTheme: ListTileThemeData(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-        minVerticalPadding: 4,
-        dense: true,
-        textColor: coolGray200,
-        iconColor: coolGray400,
-      ),
-
       iconTheme: IconThemeData(size: 20, color: coolGray800),
 
       chipTheme: ChipThemeData(
@@ -417,6 +408,16 @@ class AppThemes {
       //   inactiveThumbColor: WidgetStateProperty.all(AppThemes.darkGray),
       //   inactiveTrackColor: WidgetStateProperty.all(AppThemes.darkPrimaryGray),
       // ),
+      listTileTheme: ListTileThemeData(
+        minTileHeight: 48.0,
+        horizontalTitleGap: 12.0,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 4,
+        ), // 减少内边距
+        minVerticalPadding: 4, // 减少最小垂直间距
+        dense: true, // 启用紧凑模式
+      ),
       visualDensity: VisualDensity.adaptivePlatformDensity,
     );
   }

@@ -173,7 +173,7 @@ class PlayerPage extends HookWidget {
                             ),
                             ElevatedButton(
                               onPressed: () {},
-                              child: Icon(LineIcons.bookmark),
+                              child: Icon(Icons.bookmark),
                             ),
                             ElevatedButton(
                               onPressed: () {},

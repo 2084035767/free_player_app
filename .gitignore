@@ -37,7 +37,7 @@ migrate_working_dir/
 QWEN.md
 signals.md
 assets/json/a.json
-
+commit.md
 # Symbolication related
 app.*.symbols
 
