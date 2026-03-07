@@ -11,6 +11,7 @@ void main() async {
   configureDependencies();
   await Prefs.init();
   await DeviceUserManager.instance.init();
+  // await DeviceUserManager.instance.clearUser();
   runApp(const MyApp());
   FlutterNativeSplash.remove();
 }

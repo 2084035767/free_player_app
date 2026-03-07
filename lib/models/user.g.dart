@@ -17,6 +17,15 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
   createdAt: json['created_at'] == null
       ? null
       : DateTime.parse(json['created_at'] as String),
+  watchHistory: (json['watch_history'] as List<dynamic>?)
+      ?.map((e) => e as String)
+      .toList(),
+  favorites: (json['favorites'] as List<dynamic>?)
+      ?.map((e) => e as String)
+      .toList(),
+  watchLater: (json['watch_later'] as List<dynamic>?)
+      ?.map((e) => e as String)
+      .toList(),
 );
 
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
@@ -28,4 +37,7 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'avatar': instance.avatar,
   'is_vip': instance.isVip,
   'created_at': instance.createdAt?.toIso8601String(),
+  'watch_history': instance.watchHistory,
+  'favorites': instance.favorites,
+  'watch_later': instance.watchLater,
 };

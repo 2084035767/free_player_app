@@ -29,6 +29,16 @@ class VideoService {
     }
   }
 
+  Future<List<Video>> fetchDetailList(List<String> ids) async {
+    try {
+      final res = await dio.get('?ac=detail&ids=${ids.join(',')}');
+      return List<Video>.from(res['list'].map((x) => Video.fromJson(x)));
+    } catch (e) {
+      Logging.error('Error fetching detail: $e');
+      rethrow;
+    }
+  }
+
   Future<List<Video>> fetchCategory(int t) async {
     try {
       final res = await dio.get('?ac=detail&t=$t');

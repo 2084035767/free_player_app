@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fox_player/core/router/router_manager.dart';
-import 'package:fox_player/core/utils/url_util.dart';
+import 'package:fox_player/core/utils/str_util.dart';
 import 'package:fox_player/di/service_locator.dart';
+import 'package:fox_player/services/device_user_manager.dart';
 import 'package:fox_player/services/video_service.dart';
 import 'package:fox_player/widget/error_text.dart';
 import 'package:fox_player/widget/expandable_text.dart';
@@ -27,7 +28,7 @@ class PlayerPage extends HookWidget {
     final isFavorite = useSignal<bool>(false); // 收藏状态信号
     final isBookmarked = useSignal<bool>(false); // 书签状态信号
     final isShared = useSignal<bool>(false); // 分享状态信号（虽然分享通常不需要切换状态，但按需求实现）
-
+    final user = DeviceUserManager.instance.currentUser;
     final controller = useMemoized(
       () => BetterPlayerController(
         BetterPlayerConfiguration(
@@ -170,21 +171,20 @@ class PlayerPage extends HookWidget {
                                 child: Icon(LineIcons.play),
                               ),
                             ),
-                            ElevatedButton(
-                              onPressed: () {
-                                isFavorite.value = !isFavorite.value; // 切换收藏状态
-                              },
-                              child: Icon(
-                                isFavorite.value
-                                    ? Icons
-                                          .favorite // 实心图标（已收藏）
-                                    : Icons.favorite_border, // 空心图标（未收藏）
-                              ),
-                            ),
+
                             ElevatedButton(
                               onPressed: () {
                                 isBookmarked.value =
-                                    !isBookmarked.value; // 切换书签状态
+                                    !isBookmarked.value;
+                                if (user != null) {
+                                  DeviceUserManager.instance.updateUser(user.copyWith(
+                                    favorites: isBookmarked.value
+                                        ? [...?user.favorites, detailId.value.toString()]
+                                        : user.favorites
+                                            ?.where((id) => id != detailId.value.toString())
+                                            .toList(),
+                                  ));
+                                }
                               },
                               child: Icon(
                                 isBookmarked.value
@@ -195,7 +195,28 @@ class PlayerPage extends HookWidget {
                             ),
                             ElevatedButton(
                               onPressed: () {
+                                isFavorite.value = !isFavorite.value; // 切换收藏状态
+                                if (user != null) {
+                                  DeviceUserManager.instance.updateUser(user.copyWith(
+                                    watchLater: isFavorite.value
+                                        ? [...?user.watchLater, detailId.value.toString()]
+                                        : user.watchLater
+                                            ?.where((id) => id != detailId.value.toString())
+                                            .toList(),
+                                  ));
+                                }
+                              },
+                              child: Icon(
+                                isFavorite.value
+                                    ? Icons.watch_later // 实心图标（已添加到稍后观看）
+                                    : Icons.watch_later_outlined, // 空心图标（未添加到稍后观看）
+                              ),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
                                 isShared.value = !isShared.value; // 切换分享状态
+                                // 分享通常不需要持久化到用户数据中，但如果需要可以添加逻辑
+                                // 目前保持原样，只切换本地状态
                               },
                               child: Icon(
                                 isShared.value

@@ -80,7 +80,7 @@ class ProfileScreen extends HookWidget {
                 Column(
                   children: [
                     Text(
-                      "12",
+                      "${user?.watchHistory?.length ?? 0}",
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -95,7 +95,7 @@ class ProfileScreen extends HookWidget {
                 Column(
                   children: [
                     Text(
-                      "45",
+                      "${user?.favorites?.length ?? 0}",
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -110,14 +110,14 @@ class ProfileScreen extends HookWidget {
                 Column(
                   children: [
                     Text(
-                      "59",
+                      "${user?.watchLater?.length ?? 0}",
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
-                      "我的下载",
+                      "稍后观看",
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                   ],
@@ -145,6 +145,14 @@ class ProfileScreen extends HookWidget {
               },
             ),
             ListTile(
+              leading: const Icon(LineIcons.clock, color: Colors.orange),
+              title: const Text('稍后观看'),
+              trailing: const Icon(LineIcons.angleRight, size: 16),
+              onTap: () {
+                RouterManager.pushNamed(context, RouteNames.watchLater);
+              },
+            ),
+            ListTile(
               leading: const Icon(
                 LineIcons.download,
                 color: Colors.greenAccent,
@@ -155,14 +163,7 @@ class ProfileScreen extends HookWidget {
                 RouterManager.pushNamed(context, RouteNames.downloads);
               },
             ),
-            ListTile(
-              leading: const Icon(LineIcons.clock, color: Colors.orange),
-              title: const Text('稍后观看'),
-              trailing: const Icon(LineIcons.angleRight, size: 16),
-              onTap: () {
-                RouterManager.pushNamed(context, RouteNames.watchLater);
-              },
-            ),
+
             const SizedBox(height: 10),
             ListTile(
               leading: const Icon(LineIcons.cog, color: Colors.grey),

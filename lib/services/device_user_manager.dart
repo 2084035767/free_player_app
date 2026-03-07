@@ -57,6 +57,9 @@ class DeviceUserManager {
           username: _generateDefaultUsername(deviceId),
           avatar: 'default_${DateTime.now().millisecondsSinceEpoch % 10}',
           createdAt: DateTime.now(),
+          watchHistory: ["95310","94648"],
+          favorites: [],
+          watchLater: [],
         );
 
         // 持久化新用户

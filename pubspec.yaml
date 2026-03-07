@@ -11,6 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  rename_app: ^1.6.5
   # 状态管理
   signals_flutter: ^6.3.0
   signals_hooks: ^0.4.0
